@@ -1,14 +1,23 @@
-const buttons = document.querySelectorAll('[data-value]');
+const buttonNumbers = document.querySelectorAll('[data-value]');
+const buttonOperators = document.querySelectorAll('[data-operation]');
 const theme = document.getElementsByClassName('themes')[0].querySelectorAll('li');
 const del = document.getElementById('delete');
 const reset = document.getElementById('reset');
 const equal = document.getElementById('equal');
 const inputField = document.getElementById('input-field');
+const tempValueDisplay = document.getElementById('temp-value')
 const themeSelection = document.querySelectorAll('.selection');
 const themeSelector = document.getElementById('active-selector');
+var nextOp = '';
+var previousOp = '';
+var tempValue = 0; 
+
 
 reset.addEventListener('click', (e)=> {
     inputField.value = null;
+    tempValueDisplay.innerHTML = '';
+    previousOp = 0;
+    tempValue = 0;
 });
 
 del.addEventListener('click', (e)=> {
@@ -22,39 +31,79 @@ del.addEventListener('click', (e)=> {
     }
 });
 
-buttons.forEach((button)=> {
+buttonNumbers.forEach((button)=> {
     button.addEventListener('click', (e) => {
         let value = button.getAttribute('data-value');
         inputField.value += value;
     });
 });
 
-equal.addEventListener('click', ()=>{
-    let value = inputField.value;
-    calculate(value)
-})
-
-const calculate = (value) => {
-    let operation = value.split('');
-    for (let i=0; i<operation.length; i++) {
-        switch (operation[i]) {
+buttonOperators.forEach((operator)=> {
+    operator.addEventListener('click', (e)=> {
+    let operation = operator.getAttribute('data-operation');
+        switch (operation) {
             case '+':
-                let test = operation.splice(i, 1);
-                console.log(test)
-            break;
+                nextOp = '+';
+                break;
             case '-':
-            break;
+                nextOp = '-';
+                break;
             case '*':
-            break;
+                nextOp = '*';
+                break;
             case '/':
-            break;
-            default : 'nista'
-        } 
+                nextOp = '/';
+                break;
+        }
+        if(inputField.value != ''){
+            if (previousOp == ''){
+                tempValue = parseInt(inputField.value);
+                tempValueDisplay.innerText = parseInt(inputField.value);
+            }
+            else if (previousOp == '+'){
+                tempValue += parseInt(inputField.value);
+                tempValueDisplay.innerText = tempValue;
+            }
+            else if (previousOp == '-'){
+                tempValue -= parseInt(inputField.value);
+                tempValueDisplay.innerText  = tempValue + '-';
+            }
+            else if (previousOp == '*'){
+                tempValue *= parseInt(inputField.value);
+                tempValueDisplay.innerText  = tempValue + ' *';
+            }
+            else if (previousOp == '/'){
+                tempValue /= parseInt(inputField.value);
+                tempValueDisplay.innerText  = tempValue + ' /';
+            }
+        }    
+        previousOp = nextOp;
+        inputField.value = '';
+    });
+});
+
+equal.addEventListener('click', (e)=>{
+    if (tempValueDisplay.innerText != ''){
+        if (previousOp == '+'){
+            tempValue += parseInt(inputField.value);
+        }
+        else if (previousOp == '-'){
+            tempValue -= parseInt(inputField.value);
+        }
+        else if (previousOp == '*'){
+            tempValue *= parseInt(inputField.value);
+        }
+        else if (previousOp == '/'){
+            tempValue /= parseInt(inputField.value);
+        }
+        else {
+            tempValue = '';
+        }
+        tempValueDisplay.innerText = '';
+        inputField.value = tempValue;
+        previousOp = '';
     }
-}
-
-
-
+});
 
 
 themeSelection.forEach ((section, index) => {
