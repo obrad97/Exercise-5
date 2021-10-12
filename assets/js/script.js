@@ -78,19 +78,23 @@ buttonOperators.forEach((operator)=> {
             }
             else if (previousOp == '+'){
                 tempValue += Number(inputField.value);
-                tempValueDisplay.innerText = tempValue;
+                //tempValueDisplay.innerText = tempValue.toFixed(3);
+                tempValueDisplay.innerText = Math.round(tempValue * 1000) / 1000
             }
             else if (previousOp == '-'){
                 tempValue -= Number(inputField.value);
-                tempValueDisplay.innerText  = tempValue;
+                //tempValueDisplay.innerText  = tempValue.toFixed(3);
+                tempValueDisplay.innerText = Math.round(tempValue * 1000) / 1000
             }
             else if (previousOp == '*'){
                 tempValue *= Number(inputField.value);
-                tempValueDisplay.innerText  = tempValue;
+                //tempValueDisplay.innerText  = tempValue.toFixed(3);
+                tempValueDisplay.innerText = Math.round(tempValue * 1000) / 1000
             }
             else if (previousOp == '/'){
                 tempValue /= Number(inputField.value);
-                tempValueDisplay.innerText  = tempValue;
+                //tempValueDisplay.innerText  = tempValue.toFixed(3);
+                tempValueDisplay.innerText = Math.round(tempValue * 1000) / 1000
             }
         }    
         previousOp = nextOp;
@@ -116,7 +120,8 @@ equal.addEventListener('click', (e)=>{
             tempValue = '';
         }
         tempValueDisplay.innerText = '';
-        inputField.value = tempValue;
+        //inputField.value = tempValue.toFixed(3);
+        inputField.value = Math.round(tempValue * 1000) / 1000
         previousOp = '';
         operationSign.innerText = '';
         hasDot = false;
